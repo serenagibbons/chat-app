@@ -2,6 +2,7 @@ package com.example.friendspace;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private EditText mEmail, mPassword, mFirstName, mLastName;
     private Button mBtnRegister;
+    private Toolbar mToolbar;
     private static final String TAG = "EmailPassword";
 
     private FirebaseAuth mAuth;
@@ -41,6 +43,10 @@ public class RegistrationActivity extends AppCompatActivity {
         mFirstName = findViewById(R.id.firstName);
         mLastName = findViewById(R.id.lastName);
         mBtnRegister = findViewById(R.id.btn_register);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Register");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
