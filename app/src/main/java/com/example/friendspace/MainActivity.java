@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                User user = dataSnapshot.getValue(User.class);
             }
 
             @Override
