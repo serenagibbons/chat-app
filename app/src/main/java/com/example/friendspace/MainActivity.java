@@ -3,13 +3,24 @@ package com.example.friendspace;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.example.friendspace.Fragments.ChatsFragment;
+import com.example.friendspace.Fragments.PeopleFragment;
 import com.example.friendspace.Model.User;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
 
+        // get the current user
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         mReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
 
@@ -48,6 +62,62 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+
+        // instantiate ViewPagerAdapter
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        viewPagerAdapter.addFragment(new ChatsFragment());
+        viewPagerAdapter.addFragment(new PeopleFragment());
+
+        // set the adapter on viewPager
+        viewPager.setAdapter(viewPagerAdapter);
+
+        new TabLayoutMediator(tabLayout, viewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        // set tab texts
+                        switch(position) {
+                            case 0:
+                                tab.setText("Chats");
+                                break;
+                            case 1:
+                                tab.setText("People");
+                                break;
+                        }
+                    }
+                }
+        ).attach();
+
+    }
+
+    class ViewPagerAdapter extends FragmentStateAdapter {
+
+        ArrayList<Fragment> fragments;
+
+        // constructor
+        ViewPagerAdapter(FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+            this.fragments = new ArrayList<>();
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return fragments.size();
+        }
+
+        void addFragment(Fragment fragment) {
+            fragments.add(fragment);
+        }
+
     }
 
     @Override
@@ -59,8 +129,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logout:
+            case R.id.logout: // logout menu item
+                // sign out user
                 FirebaseAuth.getInstance().signOut();
+                // go back to start screen
                 startActivity(new Intent(MainActivity.this, StartActivity.class));
                 finish();
                 return true;
@@ -68,4 +140,5 @@ public class MainActivity extends AppCompatActivity {
                 return false;
         }
     }
+
 }
