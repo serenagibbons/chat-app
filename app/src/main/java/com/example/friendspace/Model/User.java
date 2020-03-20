@@ -7,15 +7,17 @@ public class User {
     private String firstName;
     private String lastName;
     private String imageURL;
+    private String email;
 
     // constructors
     public  User() {}
 
-    public User(String id, String firstName, String lastName, String imageURL) {
+    public User(String id, String firstName, String lastName, String imageURL, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.imageURL = imageURL;
+        this.email = email;
     }
 
     // getter and setter methods
@@ -49,6 +51,14 @@ public class User {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

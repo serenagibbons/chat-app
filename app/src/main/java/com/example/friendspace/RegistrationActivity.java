@@ -89,8 +89,8 @@ public class RegistrationActivity extends AppCompatActivity {
                             HashMap<String, String> hashMap = new HashMap<>();
                             hashMap.put("id", userID);
                             hashMap.put("email", mEmail.getText().toString());
-                            hashMap.put("first name", mFirstName.getText().toString());
-                            hashMap.put("last name", mLastName.getText().toString());
+                            hashMap.put("firstName", mFirstName.getText().toString());
+                            hashMap.put("lastName", mLastName.getText().toString());
                             hashMap.put("imageURL", "default");
 
                             mReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

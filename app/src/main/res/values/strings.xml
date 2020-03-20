@@ -7,5 +7,6 @@
     <string name="log_in">Log in</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="full_name">%s %s</string>
     <string name="logout">Logout</string>
 </resources>
