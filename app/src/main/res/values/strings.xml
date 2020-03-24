@@ -9,4 +9,6 @@
     <string name="last_name">Last Name</string>
     <string name="full_name">%s %s</string>
     <string name="logout">Logout</string>
+    <string name="send_message">Send Message</string>
+    <string name="send_button">send button</string>
 </resources>
