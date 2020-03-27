@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textColor="#FFF"
-                android:layout_marginLeft="30dp"
-                android:layout_marginStart="30dp"/>
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp"/>
 
         </androidx.appcompat.widget.Toolbar>
 

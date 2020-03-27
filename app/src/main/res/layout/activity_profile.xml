@@ -11,6 +11,7 @@
         android:id="@+id/toolbar"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="64dp"
@@ -22,6 +23,7 @@
         android:id="@+id/user_name"
         android:layout_marginTop="32dp"
         android:textSize="18sp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
