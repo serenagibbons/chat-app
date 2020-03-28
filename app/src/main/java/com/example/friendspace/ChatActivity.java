@@ -114,6 +114,24 @@ public class ChatActivity extends AppCompatActivity {
                 mMessageText.setText("");
             }
         });
+
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, UserActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
+
+        mName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatActivity.this, UserActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
     }
 
     private void sendMessage(String sender, String receiver, String message) {
