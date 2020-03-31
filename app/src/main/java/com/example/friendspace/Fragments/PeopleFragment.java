@@ -3,6 +3,7 @@ package com.example.friendspace.Fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class PeopleFragment extends Fragment {
     private PeopleAdapter mAdapter;
     private List<User> mUsers;
 
+    private SearchView mSearchView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +45,20 @@ public class PeopleFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mSearchView = view.findViewById(R.id.search_view);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
 
         // instantiate ArrayList of people (users)
         mUsers = new ArrayList<>();
