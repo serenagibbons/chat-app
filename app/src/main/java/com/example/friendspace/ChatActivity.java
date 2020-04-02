@@ -46,13 +46,15 @@ public class ChatActivity extends AppCompatActivity {
     private List<Chat> mChat;
     private RecyclerView mRecyclerView;
 
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra("userID");
+        userID = intent.getStringExtra("userID");
 
         mProfileImage = findViewById(R.id.profile_image);
         mName = findViewById(R.id.name);
@@ -143,6 +145,25 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("message", message);
 
         reference.child("Chats").push().setValue(hashMap);
+
+        // add use to chat fragment
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(mFirebaseUser.getUid())
+                .child(userID);
+
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    chatRef.child("id").setValue(userID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void displayMessages(final String currentUserID, final String friendID) {
