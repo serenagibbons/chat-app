@@ -17,20 +17,29 @@ import com.example.friendspace.Model.Chat;
 import com.example.friendspace.Model.User;
 import com.example.friendspace.R;
 import com.example.friendspace.ChatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder> implements Filterable {
+public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> implements Filterable {
 
     private Context mContext;
     private List<User> mPeople;
     private List<User> mPeopleFull;
 
+    private String mLastMessage;
+
     // constructor
-    public PeopleAdapter(Context mContext, List<User> mPeople) {
+    public ChatsAdapter(Context mContext, List<User> mPeople) {
         this.mContext = mContext;
         this.mPeople = mPeople;
         // create a copy of mPeople to always contain full list of people
@@ -41,8 +50,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.people_item, parent, false);
-        return new PeopleAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item, parent, false);
+        return new ChatsAdapter.ViewHolder(view);
     }
 
     @Override
@@ -55,6 +64,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         if (!user.getImageURL().equals("default")) {
             Glide.with(mContext).load(user.getImageURL()).into(holder.profileImage);
         }
+
+        // get last message
+        getLastMessage(user.getId(), holder.lastMessage);
 
         // open UserActivity on clicking recycler view item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -121,5 +133,29 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             lastMessage = itemView.findViewById(R.id.last_message);
             profileImage = itemView.findViewById(R.id.profile_image);
         }
+    }
+
+    private void getLastMessage(final String userID, final TextView lastMessage) {
+        mLastMessage = "";
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userID)
+                            || chat.getReceiver().equals(userID) && chat.getSender().equals(firebaseUser.getUid())) {
+                        mLastMessage = chat.getMessage();
+                    }
+                }
+                lastMessage.setText(mLastMessage);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

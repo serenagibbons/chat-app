@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.friendspace.Adapters.ChatAdapter;
+import com.example.friendspace.Adapters.MessageAdapter;
 import com.example.friendspace.Model.Chat;
 import com.example.friendspace.Model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +42,7 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mReference;
 
-    private ChatAdapter mAdapter;
+    private MessageAdapter mAdapter;
     private List<Chat> mChat;
     private RecyclerView mRecyclerView;
 
@@ -180,7 +180,7 @@ public class ChatActivity extends AppCompatActivity {
                         mChat.add(chat);
                     }
                 }
-                mAdapter = new ChatAdapter(ChatActivity.this, mChat);
+                mAdapter = new MessageAdapter(ChatActivity.this, mChat);
                 mRecyclerView.setAdapter(mAdapter);
             }
 

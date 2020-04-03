@@ -1,7 +1,6 @@
 package com.example.friendspace.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
     private static final int MSG_TYPE_RECEIVED = 0;
     private static final int MSG_TYPE_SENT = 1;
@@ -27,14 +26,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private FirebaseUser mFirebaseUser;
 
     // constructor
-    public ChatAdapter(Context mContext, List<Chat> mChats) {
+    public MessageAdapter(Context mContext, List<Chat> mChats) {
         this.mContext = mContext;
         this.mChats = mChats;
     }
 
     @NonNull
     @Override
-    public ChatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == MSG_TYPE_RECEIVED) {
             view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_received, parent, false);
@@ -42,11 +41,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         else {
             view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_sent, parent, false);
         }
-        return new ChatAdapter.ViewHolder(view);
+        return new MessageAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         Chat chat = mChats.get(position);
         holder.message_text.setText(chat.getMessage());
     }

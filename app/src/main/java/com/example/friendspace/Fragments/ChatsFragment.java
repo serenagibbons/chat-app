@@ -11,8 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.friendspace.Adapters.PeopleAdapter;
-import com.example.friendspace.Model.Chat;
+import com.example.friendspace.Adapters.ChatsAdapter;
 import com.example.friendspace.Model.ChatList;
 import com.example.friendspace.Model.User;
 import com.example.friendspace.R;
@@ -30,9 +29,8 @@ import java.util.List;
 public class ChatsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private PeopleAdapter mAdapter;
+    private ChatsAdapter mAdapter;
     private List<User> mUsers;      // User object list of users
-    //private List<String> mUserList; // String list of users
     private List<ChatList> mUserList; // String list of users
 
     private FirebaseUser mFirebaseUser;
@@ -63,7 +61,6 @@ public class ChatsFragment extends Fragment {
                     ChatList chatList = snapshot.getValue(ChatList.class);
                     mUserList.add(chatList);
                 }
-
                 displayChats();
             }
 
@@ -90,7 +87,7 @@ public class ChatsFragment extends Fragment {
                         }
                     }
                 }
-                mAdapter = new PeopleAdapter(getContext(), mUsers);
+                mAdapter = new ChatsAdapter(getContext(), mUsers);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
