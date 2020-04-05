@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.friendspace.Adapters.ChatsAdapter;
+import com.example.friendspace.Model.Chat;
 import com.example.friendspace.Model.ChatList;
 import com.example.friendspace.Model.User;
 import com.example.friendspace.R;
@@ -25,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ChatsFragment extends Fragment {
@@ -78,6 +81,23 @@ public class ChatsFragment extends Fragment {
                     ChatList chatList = snapshot.getValue(ChatList.class);
                     mUserList.add(chatList);
                 }
+                /*Collections.sort(mUserList, new Comparator<ChatList>() {
+                    @Override
+                    public int compare(ChatList chatList1, ChatList chatList2) {
+                        long time1 = chatList1.getLastMessageTime();
+                        long time2 = chatList2.getLastMessageTime();
+
+                        if (time1 > time2) {
+                            return 1;
+                        }
+                        else if (time1 == time2) {
+                            return 0;
+                        }
+                        else {
+                            return -1;
+                        }
+                    }
+                });*/
                 displayChats();
             }
 
