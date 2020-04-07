@@ -23,16 +23,6 @@
                 android:layout_height="32dp"
                 android:src="@mipmap/ic_launcher"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/app_name"
-                android:textSize="20sp"
-                android:textColor="#FFF" />
-
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -51,7 +41,7 @@
         app:tabBackground="@color/colorPrimaryDark"
         app:tabSelectedTextColor="#fff"
         app:tabIndicatorColor="@color/colorPrimaryDark"
-        app:tabTextColor="#8AA69D"
+        app:tabTextColor="#BBCEF4"
         app:tabMode="fixed"/>
 
 </LinearLayout>
