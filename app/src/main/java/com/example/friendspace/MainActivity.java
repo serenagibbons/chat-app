@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 User user = dataSnapshot.getValue(User.class);
                 // set user's profile image
                 if (!user.getImageURL().equals("default")) {
-                    Glide.with(MainActivity.this).load(user.getImageURL()).into(mProfileImage);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(mProfileImage);
                 }
             }
 

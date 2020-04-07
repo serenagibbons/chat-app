@@ -96,7 +96,7 @@ public class ChatActivity extends AppCompatActivity {
                 mName.setText(fullName);
                 // set user's profile image
                 if (!user.getImageURL().equals("default")) {
-                    Glide.with(ChatActivity.this).load(user.getImageURL()).into(mProfileImage);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(mProfileImage);
                 }
 
                 // display messages

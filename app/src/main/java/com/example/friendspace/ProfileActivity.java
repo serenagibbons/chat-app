@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
                 mUserName.setText(fullName);
                 // set user's profile image
                 if (!user.getImageURL().equals("default")) {
-                    Glide.with(ProfileActivity.this).load(user.getImageURL()).into(mProfileImage);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(mProfileImage);
                 }
             }
 
