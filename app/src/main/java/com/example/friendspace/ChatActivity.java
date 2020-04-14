@@ -151,12 +151,12 @@ public class ChatActivity extends AppCompatActivity {
 
         reference.child("Chats").push().setValue(hashMap);
 
-        // add receiving user to to current user's chat list
+        // add receiving user to current user's chat list
         final DatabaseReference chatRefSender = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(mFirebaseUser.getUid())
                 .child(userID);
 
-        // add current user to to receiving user's chat list
+        // add current user to receiving user's chat list
         final DatabaseReference chatRefReceiver = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(userID)
                 .child(mFirebaseUser.getUid());

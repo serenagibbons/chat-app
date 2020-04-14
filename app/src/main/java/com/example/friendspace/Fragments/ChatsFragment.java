@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,23 +82,6 @@ public class ChatsFragment extends Fragment {
                     ChatList chatList = snapshot.getValue(ChatList.class);
                     mUserList.add(chatList);
                 }
-                /*Collections.sort(mUserList, new Comparator<ChatList>() {
-                    @Override
-                    public int compare(ChatList chatList1, ChatList chatList2) {
-                        long time1 = chatList1.getLastMessageTime();
-                        long time2 = chatList2.getLastMessageTime();
-
-                        if (time1 > time2) {
-                            return 1;
-                        }
-                        else if (time1 == time2) {
-                            return 0;
-                        }
-                        else {
-                            return -1;
-                        }
-                    }
-                });*/
                 displayChats();
             }
 

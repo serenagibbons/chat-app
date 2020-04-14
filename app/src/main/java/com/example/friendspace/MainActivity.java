@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.bumptech.glide.Glide;
 import com.example.friendspace.Fragments.ChatsFragment;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private CircleImageView mProfileImage;
+    private ImageButton mBtnNewChat;
 
     private FirebaseUser currentUser;
     private DatabaseReference mReference;
@@ -49,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
+
+        mBtnNewChat = findViewById(R.id.btn_new_chat);
+        mBtnNewChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PeopleDialogActivity.class));
+            }
+        });
 
         // get the current user
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -135,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_layout, menu);
@@ -155,6 +166,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
-    }
+    }*/
 
 }

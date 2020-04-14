@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView mProfileImage;
+    private Button mButtonLogout;
     private TextView mUserName;
     private Toolbar mToolbar;
 
@@ -58,6 +60,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         mProfileImage = findViewById(R.id.profile_image);
         mUserName = findViewById(R.id.user_name);
+
+        mButtonLogout = findViewById(R.id.btn_logout);
+        mButtonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // sign out user
+                FirebaseAuth.getInstance().signOut();
+                // go back to start screen
+                startActivity(new Intent(ProfileActivity.this, StartActivity.class));
+                finish();
+            }
+        });
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
