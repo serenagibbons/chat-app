@@ -12,4 +12,5 @@
     <string name="send_message">Send Message</string>
     <string name="send_button">send button</string>
     <string name="create_new_message">create new message</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

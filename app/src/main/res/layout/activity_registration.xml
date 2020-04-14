@@ -71,6 +71,17 @@
             android:inputType="textPassword"
             />
 
+        <EditText
+            android:id="@+id/confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_password"
+            android:autofillHints="@string/password"
+            android:textSize="20sp"
+            android:paddingTop="8dp"
+            android:inputType="textPassword"
+            />
+
         <Button
             android:id="@+id/btn_register"
             android:layout_width="match_parent"

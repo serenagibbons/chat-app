@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText mEmail, mPassword, mFirstName, mLastName;
+    private EditText mEmail, mPassword, mConfirmPassword, mFirstName, mLastName;
     private Button mBtnRegister;
     private Toolbar mToolbar;
     private static final String TAG = "EmailPassword";
@@ -40,13 +40,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
+        mConfirmPassword = findViewById(R.id.confirm_password);
         mFirstName = findViewById(R.id.firstName);
         mLastName = findViewById(R.id.lastName);
         mBtnRegister = findViewById(R.id.btn_register);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Register");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Register");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -57,6 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
+                String confirmPassword = mConfirmPassword.getText().toString();
                 String firstName = mFirstName.getText().toString();
                 String lastName = mLastName.getText().toString();
 
@@ -64,7 +68,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName)) {
                     Toast.makeText(RegistrationActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 }
-                // else if .. // check password requirements
+                // check that user entered password correctly in both password fields
+                else if (!password.equals(confirmPassword)) {
+                    Toast.makeText(RegistrationActivity.this, "Passwords must match", Toast.LENGTH_SHORT).show();
+                }
                 else {
                     // else create new account
                     createAccount(email, password);
