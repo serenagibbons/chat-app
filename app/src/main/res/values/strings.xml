@@ -13,4 +13,6 @@
     <string name="send_button">send button</string>
     <string name="create_new_message">create new message</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="reset_password">Reset Password</string>
 </resources>

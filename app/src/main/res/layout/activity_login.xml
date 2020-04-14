@@ -57,6 +57,15 @@
         android:textColor="#fff"
         android:text="@string/log_in"/>
 
+        <TextView
+            android:id="@+id/forgot_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="4dp"
+            android:gravity="center"/>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmail, mPassword;
     private Button mBtnLogin;
     private Toolbar mToolbar;
+    private TextView mForgotPassword;
     private static final String TAG = "EmailPassword";
 
     private FirebaseAuth mAuth;
@@ -36,12 +38,14 @@ public class LoginActivity extends AppCompatActivity {
 
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
-        mBtnLogin = findViewById(R.id.btn_login);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Log in");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Log in");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
+        mBtnLogin = findViewById(R.id.btn_login);
         // set mBtnLogin OnClickListener
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,16 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
                 }
+            }
+        });
+
+        mForgotPassword = findViewById(R.id.forgot_password);
+        //set mForgotPassword OnClickListener
+        mForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // go to ResetPasswordActivity
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             }
         });
     }
