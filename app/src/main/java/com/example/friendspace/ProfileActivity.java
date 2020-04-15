@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView mProfileImage;
-    private Button mButtonLogout;
+    private Button mButtonLogout, mBtnChangePassword;
     private TextView mUserName;
     private Toolbar mToolbar;
 
@@ -70,6 +70,15 @@ public class ProfileActivity extends AppCompatActivity {
                 // go back to start screen
                 startActivity(new Intent(ProfileActivity.this, StartActivity.class));
                 finish();
+            }
+        });
+
+        mBtnChangePassword = findViewById(R.id.btn_change_password);
+        mBtnChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // go to ChangePasswordActivity
+                startActivity(new Intent(ProfileActivity.this, ChangePasswordActivity.class));
             }
         });
 

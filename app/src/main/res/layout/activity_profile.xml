@@ -32,12 +32,23 @@
         android:layout_gravity="center"/>
 
     <Button
+        android:id="@+id/btn_change_password"
+        android:text="@string/change_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_logout"
+        android:background="#fff"
+        android:padding="16dp"
+        android:gravity="center_vertical"/>
+
+    <Button
         android:id="@+id/btn_logout"
         android:text="@string/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="32dp"
-        android:background="#D8D8D8"        />
+        android:background="#D8D8D8"/>
 
 </RelativeLayout>
