@@ -17,6 +17,7 @@ import com.example.friendspace.Model.Chat;
 import com.example.friendspace.Model.User;
 import com.example.friendspace.R;
 import com.example.friendspace.ChatActivity;
+import com.example.friendspace.UserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ChatActivity.class);
+                Intent intent = new Intent(mContext, UserActivity.class);
                 intent.putExtra("userID", user.getId());
                 mContext.startActivity(intent);
             }

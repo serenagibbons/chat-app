@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,7 @@ public class UserActivity extends AppCompatActivity {
     private CircleImageView mProfileImage;
     private TextView mUserName;
     private Toolbar mToolbar;
+    private Button mBtnMessage;
 
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabaseRef;
@@ -44,12 +46,24 @@ public class UserActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        if (getSupportActionBar() != null ) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+
+        mBtnMessage = findViewById(R.id.btn_message);
+        mBtnMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(UserActivity.this, ChatActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
             }
         });
 
