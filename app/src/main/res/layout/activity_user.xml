@@ -57,6 +57,7 @@
         />
 
     <ImageButton
+        android:id="@+id/btn_friend"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"

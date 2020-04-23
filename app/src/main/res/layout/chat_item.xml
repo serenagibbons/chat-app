@@ -13,6 +13,7 @@
             android:id="@+id/profile_image"
             android:layout_width="54dp"
             android:layout_height="54dp"
+            android:layout_margin="4dp"
             android:src="@mipmap/ic_launcher" />
 
         <TextView
@@ -40,6 +41,17 @@
             android:layout_marginStart="8dp"
             android:textSize="14sp"
             android:maxLines="1"/>
+        
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/unread_message"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="4dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible"
+            android:src="@color/colorPrimary"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

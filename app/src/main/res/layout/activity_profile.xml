@@ -59,9 +59,11 @@
         android:id="@+id/btn_logout"
         android:text="@string/log_out"
         android:textStyle="bold"
+        android:textColor="#FFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#D8D8D8"/>
+        android:layout_margin="16dp"
+        android:background="@drawable/button_slightly_rounded"/>
 
 </RelativeLayout>
