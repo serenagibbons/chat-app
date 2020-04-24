@@ -26,10 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,18 +71,20 @@ public class ChatActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
 
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
+        mReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -147,7 +145,8 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
-        hashMap.put("time", timeSent);
+        hashMap.put("isUnread", true);
+        hashMap.put("timeSent", timeSent);
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -167,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (!dataSnapshot.exists()) {
                     chatRefSender.child("id").setValue(userID);
                 }
-                chatRefSender.child("lastMessageTime").setValue(timeSent);
+                //chatRefSender.child("lastMessageTime").setValue(timeSent);
             }
 
             @Override
@@ -182,7 +181,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (!dataSnapshot.exists()) {
                     chatRefReceiver.child("id").setValue(mFirebaseUser.getUid());
                 }
-                chatRefReceiver.child("lastMessageTime").setValue(timeSent);
+                //chatRefReceiver.child("lastMessageTime").setValue(timeSent);
             }
 
             @Override

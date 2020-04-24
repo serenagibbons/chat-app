@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,7 @@ public class UserActivity extends AppCompatActivity {
     private TextView mUserName;
     private Toolbar mToolbar;
     private Button mBtnMessage;
+    private ImageButton mBtnFriend;
 
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabaseRef;
@@ -64,6 +66,14 @@ public class UserActivity extends AppCompatActivity {
                 Intent intent = new Intent(UserActivity.this, ChatActivity.class);
                 intent.putExtra("userID", userID);
                 startActivity(intent);
+            }
+        });
+
+        mBtnFriend = findViewById(R.id.btn_friend);
+        mBtnFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

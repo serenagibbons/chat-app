@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,6 +38,10 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
     private List<User> mPeopleFull;
 
     private String mLastMessage;
+    private List<DatabaseReference> mChatList;
+
+    // get current user
+    private FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     // constructor
     public ChatsAdapter(Context mContext, List<User> mPeople) {
@@ -55,7 +60,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final User user = mPeople.get(position);
         // set user's full name
         String fullName = String.format(mContext.getResources().getString(R.string.full_name), user.getFirstName(), user.getLastName());
@@ -68,12 +73,23 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
         // get last message
         getLastMessage(user.getId(), holder.lastMessage);
 
-        // open UserActivity on clicking recycler view item
+        // mark as read or unread
+        mChatList = new ArrayList<>();
+        getReadStatus(user.getId(), mChatList, holder.unreadMessage);
+
+        // item OnClickListener
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra("userID", user.getId());
+                // if message is unread, mark as read
+                if (holder.unreadMessage.getVisibility() == View.VISIBLE) {
+                    markAsRead(mChatList);
+                }
+//                    markAsRead(user.getId(), holder.unreadMessage);
+                //}
+                // open UserActivity on clicking recycler view item
                 mContext.startActivity(intent);
             }
         });
@@ -124,7 +140,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name, lastMessage;
-        CircleImageView profileImage;
+        CircleImageView profileImage, unreadMessage;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -132,20 +148,77 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
             name = itemView.findViewById(R.id.name);
             lastMessage = itemView.findViewById(R.id.last_message);
             profileImage = itemView.findViewById(R.id.profile_image);
+            unreadMessage = itemView.findViewById(R.id.unread_message);
         }
     }
 
-    private void getLastMessage(final String userID, final TextView lastMessage) {
-        mLastMessage = "";
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private void getReadStatus(final String userID, final List<DatabaseReference> chatList, final CircleImageView unreadMessage) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userID)
-                            || chat.getReceiver().equals(userID) && chat.getSender().equals(firebaseUser.getUid())) {
+                    // if the receiver is the current user and sender is the other user in the message
+                    if (chat.getReceiver().equals(mFirebaseUser.getUid()) && chat.getSender().equals(userID)) {
+                        // if chat is unread set view to visible, else set to invisible
+                        chatList.add(snapshot.getRef());
+                        unreadMessage.setVisibility(chat.getIsUnread() ? View.VISIBLE : View.INVISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void markAsRead(List<DatabaseReference> chatRefs) {
+        for (DatabaseReference chatRef : chatRefs) {
+            // update chat isUnread to false (read)
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("isUnread", false);
+            chatRef.updateChildren(hashMap);
+        }
+    }
+
+    /*private void markAsRead(final String userID, final CircleImageView unreadMessage) {
+        // FIX THIS CODE
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    // if the receiver is the current user and sender is the other user in the message
+                    if (chat.getReceiver().equals(mFirebaseUser.getUid()) && chat.getSender().equals(userID)) {
+                        // update chat isUnread to false (read)
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("isUnread", false);
+                        snapshot.getRef().updateChildren(hashMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }*/
+
+    private void getLastMessage(final String userID, final TextView lastMessage) {
+        mLastMessage = "";
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(mFirebaseUser.getUid()) && chat.getSender().equals(userID)
+                            || chat.getReceiver().equals(userID) && chat.getSender().equals(mFirebaseUser.getUid())) {
                         mLastMessage = chat.getMessage();
                     }
                 }

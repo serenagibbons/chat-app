@@ -10,10 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.bumptech.glide.Glide;
@@ -51,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         mProfileImage = findViewById(R.id.profile_image);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+        }
 
         mBtnNewChat = findViewById(R.id.btn_new_chat);
         mBtnNewChat.setOnClickListener(new View.OnClickListener() {
@@ -146,26 +145,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_layout, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout: // logout menu item
-                // sign out user
-                FirebaseAuth.getInstance().signOut();
-                // go back to start screen
-                startActivity(new Intent(MainActivity.this, StartActivity.class));
-                finish();
-                return true;
-            default:
-                return false;
-        }
-    }*/
 
 }

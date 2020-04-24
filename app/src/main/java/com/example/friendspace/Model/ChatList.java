@@ -9,7 +9,7 @@ public class ChatList {
 
     public ChatList(String id, long lastMessageTime) {
         this.id = id;
-        this.lastMessageTime = lastMessageTime;
+        //this.lastMessageTime = lastMessageTime;
     }
 
     public String getId() {
@@ -20,11 +20,11 @@ public class ChatList {
         this.id = id;
     }
 
-    public long getLastMessageTime() {
+    /*public long getLastMessageTime() {
         return lastMessageTime;
     }
 
     public void setLastMessageTime(long lastMessageTime) {
         this.lastMessageTime = lastMessageTime;
-    }
+    }*/
 }

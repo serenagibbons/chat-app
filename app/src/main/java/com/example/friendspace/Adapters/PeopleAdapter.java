@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.friendspace.Model.Chat;
 import com.example.friendspace.Model.User;
+import com.example.friendspace.PeopleDialogActivity;
 import com.example.friendspace.R;
 import com.example.friendspace.ChatActivity;
 import com.example.friendspace.UserActivity;
@@ -57,11 +58,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             Glide.with(mContext).load(user.getImageURL()).into(holder.profileImage);
         }
 
-        // open UserActivity on clicking recycler view item
+        // open ChatActivity on clicking recycler view item
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, UserActivity.class);
+                Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra("userID", user.getId());
                 mContext.startActivity(intent);
             }

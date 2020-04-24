@@ -8,13 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.friendspace.Adapters.ChatsAdapter;
-import com.example.friendspace.Model.Chat;
 import com.example.friendspace.Model.ChatList;
 import com.example.friendspace.Model.User;
 import com.example.friendspace.R;
@@ -27,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ChatsFragment extends Fragment {

@@ -1,20 +1,21 @@
 package com.example.friendspace.Model;
 
-import java.util.Date;
-
 public class Chat {
 
     private String sender;
     private String receiver;
     private String message;
+
+    private Boolean isUnread;
     private long timeSent;
 
     public Chat() {}
 
-    public Chat(String sender, String receiver, String message, long timeSent) {
+    public Chat(String sender, String receiver, String message, Boolean isUnread, long timeSent) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.isUnread = isUnread;
         this.timeSent = timeSent;
     }
 
@@ -40,6 +41,14 @@ public class Chat {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Boolean getIsUnread() {
+        return isUnread;
+    }
+
+    public void setIsUnread(Boolean isUnread) {
+        this.isUnread = isUnread;
     }
 
     public long getTimeSent() {
