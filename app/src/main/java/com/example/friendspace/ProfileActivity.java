@@ -127,6 +127,9 @@ public class ProfileActivity extends AppCompatActivity {
                 if (!user.getImageURL().equals("default")) {
                     Glide.with(getApplicationContext()).load(user.getImageURL()).into(mProfileImage);
                 }
+                else {
+                    mProfileImage.setImageResource(R.mipmap.ic_launcher);
+                }
             }
 
             @Override
@@ -251,7 +254,11 @@ public class ProfileActivity extends AppCompatActivity {
                             selectImage();
                             break;
                         case 1:
-                            // remove current photo
+                            // update user's profile image in database to reset photo
+                            mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("imageURL", "default");
+                            mDatabaseRef.updateChildren(hashMap);
                     }
                 }
             });
