@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="edit_photo_options">
+        <item>@string/edit_profile_photo</item>
+        <item>@string/remove_current_photo</item>
+    </array>
+</resources>

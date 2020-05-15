@@ -10,8 +10,8 @@
     <string name="full_name">%s %s</string>
     <string name="logout">Logout</string>
     <string name="send_message">Send Message</string>
-    <string name="send_button">send button</string>
-    <string name="create_new_message">create new message</string>
+    <string name="send_button">Send button</string>
+    <string name="create_new_message">Create new message</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="reset_password">Reset Password</string>
@@ -22,4 +22,7 @@
     <string name="message">Message</string>
     <string name="friends">Friends</string>
     <string name="add_friend">Add friend</string>
+    <string name="edit_profile_photo">Edit profile photo</string>
+    <string name="change_profile_photo">Change Profile Photo</string>
+    <string name="remove_current_photo">Remove Current Photo</string>
 </resources>

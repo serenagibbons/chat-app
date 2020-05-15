@@ -45,13 +45,24 @@
         android:text="@string/settings"/>
 
     <Button
+        android:id="@+id/btn_edit_picture"
+        android:text="@string/edit_profile_photo"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_below="@id/text_settings"
+        android:padding="16dp"
+        />
+
+    <Button
         android:id="@+id/btn_change_password"
         android:text="@string/change_password"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:layout_below="@id/text_settings"
+        android:layout_below="@id/btn_edit_picture"
         android:padding="16dp"
         />
 

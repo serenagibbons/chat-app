@@ -2,15 +2,20 @@ package com.example.friendspace;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.ContentLoadingProgressBar;
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +26,7 @@ import com.example.friendspace.Model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView mProfileImage;
-    private Button mButtonLogout, mBtnChangePassword;
+    private Button mButtonLogout, mBtnEditPicture, mBtnChangePassword;
     private TextView mUserName;
     private Toolbar mToolbar;
 
@@ -49,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private StorageReference mStorage;
 
+    public static final String TAG = "ProfileActivity";
     private static final int SELECT_IMAGE = 1;
     private Uri imageUri;
     private StorageTask uploadTask;
@@ -73,6 +80,15 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        mBtnEditPicture = findViewById(R.id.btn_edit_picture);
+        mBtnEditPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // display dialog box
+                displayDialog();
+            }
+        });
+
         mBtnChangePassword = findViewById(R.id.btn_change_password);
         mBtnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         // initialize Storage Reference
-        mStorage = FirebaseStorage.getInstance().getReference("uploads");
+        mStorage = FirebaseStorage.getInstance().getReference("images");
         // initialize Firebase User
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         // initialize Database Reference
@@ -123,8 +139,8 @@ public class ProfileActivity extends AppCompatActivity {
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // open image from android photos
-                selectImage();
+                // display dialog box
+                displayDialog();
             }
         });
     }
@@ -143,8 +159,22 @@ public class ProfileActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        // if request code == SELECT_IMAGE, result code is okay and data is not null, upload image
+        if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            if (uploadTask != null && uploadTask.isInProgress()) {
+                Toast.makeText(ProfileActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+            } else {
+                uploadImage();
+            }
+        }
+    }
+
+    private void uploadImage() {
         if (imageUri != null) {
             final StorageReference fileReference = mStorage.child(System.currentTimeMillis() + "." +getFileExtension(imageUri));
             uploadTask = fileReference.putFile(imageUri);
@@ -164,6 +194,11 @@ public class ProfileActivity extends AppCompatActivity {
                         // get url to the uploaded content
                         Uri downloadFile = task.getResult();
                         String stringUri = downloadFile.toString();
+                        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid()).child("imageURL");
+                        Log.w(TAG, mDatabaseRef.toString());
+                        if (!mDatabaseRef.toString().equals("default")) {
+                            deleteImage(mDatabaseRef.toString());
+                        }
 
                         // update user's profile image in database
                         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
@@ -184,19 +219,44 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void deleteImage(String imagePath) {
+        // Create a reference to the file to delete
+        StorageReference imageRef = mStorage.child(imagePath);
+        Log.w(TAG, imagePath);
 
-        // if request code == SELECT_IMAGE, result code is okay and data is not null, upload image
-        if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            if (uploadTask != null && uploadTask.isInProgress()) {
-                Toast.makeText(ProfileActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-            } else {
-                uploadImage();
+        // Delete the file
+        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.w(TAG, "File deleted successfully");
             }
-        }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.w(TAG, "Error: unable to delete file");
+            }
+        });
+    }
+
+    private void displayDialog() {
+        AlertDialog.Builder adb = new AlertDialog.Builder(ProfileActivity.this);
+        adb.setCancelable(true)
+            .setItems(R.array.edit_photo_options, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // The 'which' argument contains the index position
+                    // of the selected item
+                    switch(which) {
+                        case 0:
+                            // open image from android photos
+                            selectImage();
+                            break;
+                        case 1:
+                            // remove current photo
+                    }
+                }
+            });
+        AlertDialog alert = adb.create();
+        alert.show();
     }
 
 }
